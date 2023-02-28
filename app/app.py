@@ -5,4 +5,4 @@ app= Flask(__name__)
 def hello_name():
     return f"Hello {sys.argv[1]}!"
 if __name__ == "__main__":   
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="54.90.55.54", port=5000)
