@@ -25,15 +25,14 @@ pipeline {
         }
         stage ("testing"){
             steps{
-            sh 'curl -v --no-tcp-nodelay $(dig +short myip.opendns.com @resolver1.opendns.com):5000 &> result.csv'
-              sh 'date >> result.csv && ${BUILD_USER_FIRST_NAME} >> result.csv ' 
+            sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 > Result-${BUILD_USER_FIRST_NAME}-$(date -I).csv'
     
                         }
         }
         stage ('upload to s3 bucket'){
             steps{
                 withAWS(credentials: 'awscredentials'){
-                     sh 'aws s3 cp result*.csv s3://test-result-flask-app'
+                     sh 'aws s3 cp Result*.csv s3://test-result-flask-app'
                 }
             }
         }
