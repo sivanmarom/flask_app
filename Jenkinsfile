@@ -26,7 +26,7 @@ pipeline {
         stage ("testing"){
             steps{
             sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 > Result.csv'
-                sh 'date > Result.csv && ${BUILD_USER_FIRST_NAME} > Result.csv '
+               
     
                         }
         }
