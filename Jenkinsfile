@@ -46,7 +46,7 @@ pipeline {
         }
         stage('upload to dynamodb'){
             steps{
-                sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'"+now+"\',\'state\':\'$RESULT\'}\""
+                sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$now\',\'state\':\'$RESULT\'}\""
             }
         }
     }
