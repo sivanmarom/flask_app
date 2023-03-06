@@ -32,26 +32,16 @@ pipeline {
               }
         }
         }
-//       stage ("testing"){
-//              steps{
-//            sh 'RESULT=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000) '
-//                  sh 'echo "$RESULT" >> Result.json'
-//               sh 'echo "$TIME" >> Result.json'
+       stage ("testing"){
+              steps{
+            sh 'RESULT=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000) '
+                sh 'echo "$RESULT" >> Result.json'
+               sh 'echo "$TIME" >> Result.json'
 //                sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$TIME\',\'state\':\'$RESULT\'}\""
     
-//                         }
-//         }
-        stage("testing") {
-    steps {
-     sh """
-            RESPONSE=\$(curl -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000)
-            STATUS=\$(echo "\$RESPONSE" | grep HTTP/1.1 | awk '{print \$2}')
-            echo "{\\"status\\": \\"\$STATUS\\", \\"time\\": \\"\$TIME\\"}" > Result.json
-//             aws dynamodb execute-statement --statement "INSERT INTO test-result VALUE { \\'user\\':\\'$BUILD_USER\\',\\'date\\':\\'$TIME\\',\\'state\\':\\'$STATUS\\'}"
-        """
-    
-    }
-}
+                         }
+         }
+      
         
         
         stage ('upload to s3 bucket'){
