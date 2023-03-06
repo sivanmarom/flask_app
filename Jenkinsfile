@@ -43,12 +43,13 @@ pipeline {
 //         }
         stage("testing") {
     steps {
-        sh """
+       sh """
             RESPONSE=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000)
             STATUS=$(echo "$RESPONSE" | grep HTTP/1.1 | awk '{print $2}')
-            echo "{\"status\": \"$STATUS\", \"time\": \"$TIME\"}" > Result.json
-            aws dynamodb execute-statement --statement "INSERT INTO test-result VALUE { 'user':'$BUILD_USER','date':'$TIME','state':'$STATUS'}"
+            echo "{\\"status\\": \\"$STATUS\\", \\"time\\": \\"$TIME\\"}" > Result.json
+            aws dynamodb execute-statement --statement "INSERT INTO test-result VALUE { 'user':'${BUILD_USER}','date':'${TIME}','state':'${STATUS}'}"
         """
+    
     }
 }
         
