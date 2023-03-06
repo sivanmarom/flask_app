@@ -32,8 +32,8 @@ pipeline {
         }
         stage ("testing"){
             steps{
-           sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 >> Result.json'
-                sh 'date >> Result.json'
+          sh 'RESULT=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000) && echo "$RESULT" >> Result.json'
+             sh 'now=$(date "+%Y-%m-%d %H:%M:%S") && echo $now >> Result.json'
     
                         }
         }
@@ -42,6 +42,11 @@ pipeline {
                 withAWS(credentials: 'awscredentials'){
                      sh 'aws s3 cp Result*.json s3://test-result-flask-app'
                 }
+            }
+        }
+        stage('upload to dynamodb'){
+            steps{
+                sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'"+now+"\',\'state\':\'$RESULT\'}\""
             }
         }
     }
