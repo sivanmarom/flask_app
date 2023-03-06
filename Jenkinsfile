@@ -34,7 +34,8 @@ pipeline {
         }
        stage ("testing"){
               steps{
-          sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" >> Result.json'
+                  sh ' STATUS=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK")'
+                  sh ' echo "$STATUS" >> Result.json 
                sh 'echo "$TIME" >> Result.json'
 //                sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$TIME\',\'state\':\'$RESULT\'}\""
     
