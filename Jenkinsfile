@@ -26,7 +26,7 @@ pipeline {
         stage("build user") {
         steps{
               wrap([$class: 'BuildUser']) {
-                sh 'echo ${BUILD_USER} >> result.json'
+                sh 'echo ${BUILD_USER} >> Result.json'
               }
         }
         }
