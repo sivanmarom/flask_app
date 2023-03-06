@@ -1,6 +1,8 @@
 pipeline {
     agent {label "slave1"}
-    
+    environment {
+    TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
+  }
     stages {
         stage('Checkout SCM'){
             steps{
@@ -33,7 +35,7 @@ pipeline {
         stage ("testing"){
             steps{
           sh 'RESULT=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000) && echo "$RESULT" >> Result.json'
-             sh 'TIME=$(date "+%Y-%m-%d %H:%M:%S") && echo "$TIME" >> Result.json'
+             sh 'echo "$TIME" >> Result.json'
     
                         }
         }
