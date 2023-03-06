@@ -33,7 +33,7 @@ pipeline {
         stage ("testing"){
             steps{
           sh 'RESULT=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000) && echo "$RESULT" >> Result.json'
-             sh 'now=$(date "+%Y-%m-%d %H:%M:%S") && echo $now >> Result.json'
+             sh 'TIME=$(date "+%Y-%m-%d %H:%M:%S") && echo "$TIME" >> Result.json'
     
                         }
         }
@@ -46,7 +46,7 @@ pipeline {
         }
         stage('upload to dynamodb'){
             steps{
-                sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$now\',\'state\':\'$RESULT\'}\""
+                sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$TIME\',\'state\':\'$RESULT\'}\""
             }
         }
     }
