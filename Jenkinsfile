@@ -26,8 +26,7 @@ pipeline {
         stage ("testing"){
             steps{
            sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 > Result-${BUILD_USER_FIRST_NAME}-$(date -I).json'
-               sh 'cp ${WORKSPACE}/result.json /home/ubuntu/workspace/flask_app'
-
+               sh 'ls ${WORKSPACE}'
      
     
                         }
