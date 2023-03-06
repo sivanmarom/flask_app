@@ -23,17 +23,17 @@ pipeline {
               sh "sudo docker run -d -p 5000:5000 flask_image"
             }
         }
+        stage("build user") {
+        steps{
+              wrap([$class: 'BuildUser']) {
+                sh 'echo ${BUILD_USER} >> result.json'
+              }
+        }
+        }
         stage ("testing"){
             steps{
-           sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 > Result-${BUILD_USER_FIRST_NAME}-$(date -I).json'
-              sh """
-for file in /home/ubuntu/workspace/flask_app/Result*.json
-do
-  aws dynamodb batch-write-item --request-items file://\$file
-done
-"""
-
-     
+           sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 > Result.json'
+                sh 'date > Result.json'
     
                         }
         }
