@@ -53,7 +53,7 @@ pipeline {
 // //                 sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$TIME\',\'state\':\'$RESULT\'}\""
 // //             }
 // //         }
-//     }
+    }
     post {
         always {
             deleteDir()
