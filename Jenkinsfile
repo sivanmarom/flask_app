@@ -26,7 +26,13 @@ pipeline {
         stage ("testing"){
             steps{
            sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 > Result-${BUILD_USER_FIRST_NAME}-$(date -I).json'
-              sh "aws dynamodb batch-write-item --request-items file://${WORKSPACE}/Result*.json"
+              sh """
+for file in /home/ubuntu/workspace/flask_app/Result*.json
+do
+  aws dynamodb batch-write-item --request-items file://\$file
+done
+"""
+
      
     
                         }
