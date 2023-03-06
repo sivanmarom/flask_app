@@ -51,12 +51,7 @@ sh 'aws dynamodb execute-statement --statement "INSERT INTO test-result VALUES (
                 }
             }
         }
-// //         stage('upload to dynamodb'){
-// //             steps{
-// //                 sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUES ('user': '$BUILD_USER', 'date': '$TIME', 'state': '\$(curl -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\")')
-""
-// //             }
-// //         }
+
     }
     post {
         always {
