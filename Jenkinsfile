@@ -34,7 +34,8 @@ pipeline {
         }
         stage ("testing"){
             steps{
-          sh 'RESULT=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000) && echo "$RESULT" >> Result.json'
+          sh 'RESULT=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000) '
+                sh 'echo "$RESULT" >> Result.json'
              sh 'echo "$TIME" >> Result.json'
     
                         }
