@@ -36,7 +36,7 @@ pipeline {
             steps{
           sh 'RESULT=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000) '
                 sh 'echo "$RESULT" >> Result.json'
-             sh 'echo "$TIME" >> Result.json'esult VALUE { \'user':\'$BUILD_USER\',\'date\':\'$TIME\',\'state\':\'$RESULT\'}\""
+             sh 'echo "$TIME" >> Result.json'
               sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$TIME\',\'state\':\'$RESULT\'}\""
     
                         }
@@ -48,12 +48,12 @@ pipeline {
                 }
             }
         }
-//         stage('upload to dynamodb'){
-//             steps{
-//                 sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$TIME\',\'state\':\'$RESULT\'}\""
-//             }
-//         }
-    }
+// //         stage('upload to dynamodb'){
+// //             steps{
+// //                 sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { \'user':\'$BUILD_USER\',\'date\':\'$TIME\',\'state\':\'$RESULT\'}\""
+// //             }
+// //         }
+//     }
     post {
         always {
             deleteDir()
