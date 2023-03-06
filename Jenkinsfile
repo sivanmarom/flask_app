@@ -37,8 +37,7 @@ pipeline {
                       sh  ' curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" >> Result.json'
    
                sh 'echo "$TIME" >> Result.json'
-             sh "aws dynamodb execute-statement --statement \"INSERT INTO test-result VALUE { 'user':'$BUILD_USER', 'date':'$TIME', 'state': '\$(curl -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\")' }\""
-
+sh 'aws dynamodb execute-statement --statement "INSERT INTO test-result (user, date, state) VALUES ('SCM Change', '2023-03-06 16:13:39', 'HTTP/1.1 200 OK')" '
 
     
                          }
