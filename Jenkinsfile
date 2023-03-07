@@ -25,25 +25,22 @@ pipeline {
               sh "sudo docker run -d -p 5000:5000 flask_image"
             }
         }
-//         stage("build user") {
-//   steps{
-//     wrap([$class: 'BuildUser', useGitAuthor: true]) {
-//       sh 'echo ${BUILD_USER} >> Result.json'
-//     }
-//   }
-// }
+        stage("build user") {
+  steps{
+    wrap([$class: 'BuildUser', useGitAuthor: true]) {
+      sh 'echo ${BUILD_USER} >> Result.json'
+    }
+  }
+}
       stage("testing") {
     steps {
         script {
             def USER
-            def STATUS
            STATUS = sh(script: "curl -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
-       USER = sh(script: "curl -v -s -S -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"Hello\" | sed -E 's/Hello (.+)/\\1/g' | tr -d \"\\r\\n\"", returnStdout: true).trim()
             sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" >> Result.json'
             sh 'echo "$TIME" >> Result.json'
-             sh 'echo "$USER" >> Result.json'
             withAWS(credentials: 'awscredentials', region: 'us-east-1') {
-                sh "aws dynamodb put-item --table-name test-result --item '{\"user\": {\"S\": \"${USER}\"}, \"date\": {\"S\": \"${TIME}\"}, \"state\": {\"S\": \"${STATUS}\"}}'"
+                sh "aws dynamodb put-item --table-name test-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"date\": {\"S\": \"${TIME}\"}, \"state\": {\"S\": \"${STATUS}\"}}'"
             }
         }
     }
