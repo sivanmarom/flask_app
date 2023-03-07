@@ -36,7 +36,7 @@ pipeline {
         }
        stage ("testing"){
     steps{
-         STATUS = sh(script: "curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\"", returnStdout: true).trim()
+        sh' STATUS = sh(script: "curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\"", returnStdout: true).trim()'
 
         sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" >> Result.json'
         sh 'echo "$TIME" >> Result.json'
