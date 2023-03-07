@@ -2,7 +2,7 @@ pipeline {
     agent {label "slave1"}
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
-        STATUS=""
+        STATUS = sh(script: "curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep 'HTTP/1.1 200 OK'", returnStdout: true).trim()
   }
     stages {
         stage('Checkout SCM'){
@@ -36,8 +36,6 @@ pipeline {
        stage ("testing"){
     steps{
         sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" >> Result.json'
-        sh 'STATUS=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK")'
-        sh 'echo "$STATUS" >> Result.json'
         sh 'echo "$TIME" >> Result.json'
         sh 'aws dynamodb execute-statement --statement "INSERT INTO test-result VALUES (\'user\', \'${BUILD_USER}\', \'date\', \'${TIME}\', \'state\', \'${STATUS}\')"'
     }
