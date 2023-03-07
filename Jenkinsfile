@@ -43,8 +43,8 @@ environment {
     
         sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" >> Result.json'
         sh 'echo "$TIME" >> Result.json'
-      sh "aws dynamodb put-item --table-name test-result --item '{"user": {"S": "SCM Change"}, "date": {"S": "2023-03-07 11:09:01"}, "state": {"S": "HTTP/1.1 200 OK"}}' --region us-east-1
-"
+      sh "aws dynamodb put-item --table-name test-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"date\": {\"S\": \"${TIME}\"}, \"state\": {\"S\": \"${STATUS}\"}}' --region us-east-1"
+
 
     }
 }
