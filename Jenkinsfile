@@ -2,7 +2,8 @@ pipeline {
     agent {label "slave1"}
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
-        STATUS = sh(script: "curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep 'HTTP/1.1 200 OK'", returnStdout: true).trim()
+        STATUS = sh(script: 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK"', returnStdout: true).trim()
+
   }
     stages {
         stage('Checkout SCM'){
