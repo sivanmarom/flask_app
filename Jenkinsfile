@@ -35,11 +35,8 @@ pipeline {
         }
        stage ("testing"){
 environment {
-sh 'STATUS=$(curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" | tr -d "\\r\\n")'
-
-
+    STATUS = sh(script: "curl -I $$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
 }
-
     steps{
     
         sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" >> Result.json'
