@@ -19,7 +19,7 @@ pipeline {
         
         stage('Build Docker image') {
             steps {
-                sh "cp app/ ."
+                sh "cp -r app/ ."
               
                 sh 'sudo docker build  -t flask_image .'
               sh "sudo docker run -d -p 5000:5000 flask_image"
