@@ -22,7 +22,7 @@ pipeline {
 //                sh 'cp app/Dockerfile .'
 //                 sh 'cp app/requirements.txt .'
                 sh 'sudo docker build  -t flask_image .'
-              sh "sudo docker run -d -p 5000:5000 flask_image"
+              sh "sudo docker run --name flaskApp -d -p 5000:5000 flask_image"
             }
         }
         stage("build user") {
@@ -52,7 +52,13 @@ pipeline {
                 }
             }
         }
-
+        
+        stage('stop conatiner'){
+            steps {
+                sh' sudo docker stop flaskApp'
+                sh 'sudo docker rm flaskApp'
+            }
+        }
     }
     post {
         always {
